@@ -1,0 +1,4 @@
+# Username  UID Group GID Password Path_to_yourhome Shell Groups Comment
+# UID and GID = -1 : autogen ID
+# Groups = - : do not join any subgroups
+tuyenhv1 -1 tuyenhv1 -1 =tuyenhv1 /home/tuyenhv1 /bin/sh - User_Project
