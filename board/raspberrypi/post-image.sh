@@ -7,6 +7,10 @@ BOARD_NAME="$(basename ${BOARD_DIR})"
 GENIMAGE_CFG="${BOARD_DIR}/genimage-${BOARD_NAME}.cfg"
 GENIMAGE_TMP="${BUILD_DIR}/genimage.tmp"
 
+if [ -e "${BOARD_DIR}/uenv.txt" ]; then
+    cp "${BOARD_DIR}/uenv.txt" "${BINARIES_DIR}/uenv.txt"
+fi
+
 # generate genimage from template if a board specific variant doesn't exists
 if [ ! -e "${GENIMAGE_CFG}" ]; then
 	GENIMAGE_CFG="${BINARIES_DIR}/genimage.cfg"
@@ -18,6 +22,13 @@ if [ ! -e "${GENIMAGE_CFG}" ]; then
 
 	KERNEL=$(sed -n 's/^kernel=//p' "${BINARIES_DIR}/rpi-firmware/config.txt")
 	FILES+=( "${KERNEL}" )
+
+	if [ "${KERNEL}" == "u-boot.bin" ]; then
+		FILES+=( "Image" )
+		if [ -e "${BINARIES_DIR}/uenv.txt" ]; then
+			FILES+=( "uenv.txt" )
+		fi
+	fi
 
 	BOOT_FILES=$(printf '\\t\\t\\t"%s",\\n' "${FILES[@]}")
 	sed "s|#BOOT_FILES#|${BOOT_FILES}|" "${BOARD_DIR}/genimage.cfg.in" \
