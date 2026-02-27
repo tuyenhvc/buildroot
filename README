@@ -1,28 +1,38 @@
+Download this repo
+1) mkdir workdir
+2) cd workdir
+3) git clone https://github.com/tuyenhvc/buildroot.git -b develop
+
+
+---------------------------------------------------------------------------------------------------------------
+Override kernel source
+1) cd workdir
+2) git clone --depth 1 -b rpi-6.6.y https://github.com/raspberrypi/linux.git
+3) touch buildroot/local.mk and add the below line
+LINUX_OVERRIDE_SRCDIR=$(TOPDIR)/../linux
+
+
+---------------------------------------------------------------------------------------------------------------
+Add U-Boot to the boot process
+1) cd workdir
+2) git clone https://github.com/tuyenhvc/u-boot-buildroot-rpi4.git u-boot -b develop
+3) vi buildroot/local.mk to add the below line
+UBOOT_OVERRIDE_SRCDIR = UBOOT_OVERRIDE_SRCDIR=$(TOPDIR)/../u-boot
+
+
 ---------------------------------------------------------------------------------------------------------------
 Step build for pi4
 1) make raspberrypi4_64_defconfig
 2) make
     => find the kernel, bootloader, root filesystem, sdcard.img etc. in output/images
+3) make linux-dirclean (if need to cleanup kernel)
+4) make linux-rebuild  (if need to rebuild kernel)
+    if terminal show: >>> linux custom Syncing from source dir /your/path/to/kernel , ok linux have beed override
+5) make uboot-dirclean (if need to cleanup uboot)
+
+
 ---------------------------------------------------------------------------------------------------------------
 Command to flash into sdcard
 1) lsblk to check which is your sdcard. VD: sdb
 2) sudo umount /dev/sdb*
 3) sudo dd if=output/images/sdcard.img of=/dev/sdb bs=4M status=progress conv=fsync
-
----------------------------------------------------------------------------------------------------------------
-Override kernel source
-1) git clone --depth 1 -b rpi-6.6.y https://github.com/raspberrypi/linux.git
-2) touch [local.mk](http://local.mk/)
-LINUX_OVERRIDE_SRCDIR = /path_to_linux_source
-3) make linux-dirclean
-4) make linux-rebuild
-if terminal show: >>> linux custom Syncing from source dir /your/path/to/kernel , ok linux have beed override
-
----------------------------------------------------------------------------------------------------------------
-Add U-Boot to the boot process
-1) git clone https://github.com/tuyenhvc/u-boot-buildroot-rpi4.git -b develop
-2) vi local.mk to add the below line
-UBOOT_OVERRIDE_SRCDIR = /home/tuyenhv1/work/rpi4_buildroot/u-boot
-3) make uboot-dirclean
-4) make
----------------------------------------------------------------------------------------------------------------

@@ -1,2 +1,2 @@
-LINUX_OVERRIDE_SRCDIR=/home/tuyenhv1/work/rpi4_buildroot/linux
-UBOOT_OVERRIDE_SRCDIR = /home/tuyenhv1/work/rpi4_buildroot/u-boot
+LINUX_OVERRIDE_SRCDIR=$(TOPDIR)/../linux
+UBOOT_OVERRIDE_SRCDIR=$(TOPDIR)/../u-boot
