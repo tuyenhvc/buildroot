@@ -7,7 +7,7 @@ Download this repo
 ---------------------------------------------------------------------------------------------------------------
 Override kernel source
 1) cd workdir
-2) git clone --depth 1 -b rpi-6.6.y https://github.com/raspberrypi/linux.git
+2) git clone https://github.com/tuyenhvc/linux-buildroot-rpi4.git linux -b develop
 3) touch buildroot/local.mk and add the below line
 LINUX_OVERRIDE_SRCDIR=$(TOPDIR)/../linux
 
