@@ -24,7 +24,6 @@ if [ ! -e "${GENIMAGE_CFG}" ]; then
 	FILES+=( "${KERNEL}" )
 
 	if [ "${KERNEL}" == "u-boot.bin" ]; then
-		FILES+=( "Image" )
 		if [ -e "${BINARIES_DIR}/uenv.txt" ]; then
 			FILES+=( "uenv.txt" )
 		fi

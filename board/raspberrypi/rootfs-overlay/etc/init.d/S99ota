@@ -1,0 +1,12 @@
+#!/bin/sh
+
+case "$1" in
+  start)
+    echo "TuyenHV1: Confirming boot success..."
+    # Đặt lại boot_tries = 3 để xác nhận hệ thống boot thành công
+    fw_setenv boot_tries 3
+    ;;
+  *)
+    exit 0
+    ;;
+esac

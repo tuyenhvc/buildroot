@@ -18,8 +18,15 @@ image sdcard.img {
 		image = "boot.vfat"
 	}
 
-	partition rootfs {
+	partition rootfs_a {
 		partition-type = 0x83
 		image = "rootfs.ext4"
+		size = 512M
+	}
+
+	partition rootfs_b {
+		partition-type = 0x83
+		image = "rootfs.ext4"
+		size = 512M
 	}
 }

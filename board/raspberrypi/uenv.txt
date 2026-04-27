@@ -1,2 +1,6 @@
-bootargs=console=ttyAMA0,115200 root=/dev/mmcblk0p2 rootwait
-uenvcmd=fatload mmc 0:1 ${kernel_addr_r} Image; booti ${kernel_addr_r} - ${fdt_addr}
+init_vars=if env exists active_slot; then true; else setenv active_slot a; setenv boot_tries 3; saveenv; fi
+check_slot=if test "${boot_tries}" = "0"; then if test "${active_slot}" = "a"; then setenv active_slot b; else setenv active_slot a; fi; setenv boot_tries 3; saveenv; fi; if test "${boot_tries}" = "3"; then setenv boot_tries 2; elif test "${boot_tries}" = "2"; then setenv boot_tries 1; elif test "${boot_tries}" = "1"; then setenv boot_tries 0; fi; saveenv
+set_args=if test "${active_slot}" = "b"; then setenv bootargs console=ttyAMA0,115200 root=/dev/mmcblk0p3 rootwait; setenv kernel_part 3; else setenv bootargs console=ttyAMA0,115200 root=/dev/mmcblk0p2 rootwait; setenv kernel_part 2; fi
+load_kernel=ext4load mmc 0:${kernel_part} ${kernel_addr_r} boot/Image
+boot_kernel=booti ${kernel_addr_r} - ${fdt_addr}
+uenvcmd=run init_vars; run check_slot; run set_args; run load_kernel; run boot_kernel
