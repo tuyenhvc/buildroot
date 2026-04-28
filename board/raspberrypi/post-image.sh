@@ -51,4 +51,11 @@ genimage \
 	--outputpath "${BINARIES_DIR}" \
 	--config "${GENIMAGE_CFG}"
 
+echo "Generating bmap and compressed image for OTA..."
+${HOST_DIR}/bin/bmaptool create -o "${BINARIES_DIR}/rootfs.ext4.bmap" "${BINARIES_DIR}/rootfs.ext4"
+gzip -k -f "${BINARIES_DIR}/rootfs.ext4"
+
+echo "Bundling OTA package..."
+tar -cf "${BINARIES_DIR}/ota_update_full.tar" -C "${BINARIES_DIR}" rootfs.ext4.gz rootfs.ext4.bmap
+
 exit $?
