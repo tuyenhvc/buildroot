@@ -1,0 +1,30 @@
+#!/bin/sh
+#
+# Auto-calibrate touchscreen if not already calibrated
+#
+
+export TSLIB_TSDEVICE=/dev/input/event0
+export TSLIB_CALIBFILE=/etc/pointercal
+export TSLIB_FBDEVICE=/dev/fb0
+export TSLIB_CONFFILE=/etc/ts.conf
+export TSLIB_PLUGINDIR=/usr/lib/ts
+
+case "$1" in
+  start)
+    if [ ! -f "$TSLIB_CALIBFILE" ]; then
+      echo "Starting touchscreen calibration..."
+      ts_calibrate
+    fi
+    ;;
+  stop)
+    ;;
+  restart|reload)
+    "$0" stop
+    "$0" start
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
+esac
+
+exit $?
